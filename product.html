@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product | LuxeLight</title>
+  <link rel="stylesheet" href="assets/styles.css"/>
+  <script defer src="assets/script.js"></script>
+</head>
+<body>
+
+<header class="site_header">
+  <div class="container nav">
+    <a href="index.html" class="logo">LuxeLight</a>
+    <nav class="main_nav">
+      <a href="index.html">Home</a>
+      <a href="collection.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a href="checkout.html" class="cart_link">Cart <span id="cart_count">0</span></a>
+  </div>
+</header>
+
+  <main class="container">
+    <div id="product_area" class="product_layout"></div>
+  </main>
+
+<footer class="site_footer">
+  <div class="container">
+    <p>© LuxeLight. All rights reserved.</p>
+  </div>
+</footer>
+
+  <script>
+    function getParam(name){ return new URLSearchParams(location.search).get(name); }
+    loadProducts().then(list => {
+      const id = parseInt(getParam('id'));
+      const p = list.find(x => x.id === id) || list[0];
+      const price = markedUp(p.basePrice);
+      const area = document.getElementById('product_area');
+      area.innerHTML = `
+        <div>
+          <img src="${p.image}" alt="${p.name}"/>
+        </div>
+        <div>
+          <h1>${p.name}</h1>
+          <div class="meta">In stock · Free UK delivery · 5 year guarantee</div>
+          <div style="margin:10px 0"><span class="price">${money(price)}</span> <span class="base_price">${money(p.basePrice)}</span> <span class="stars">★★★★★</span></div>
+          <p>${p.description}</p>
+          <div class="qty_row">
+            <label for="qty">Qty</label>
+            <input id="qty" type="number" min="1" value="1"/>
+          </div>
+          <button class="buy_btn" id="add_btn">Add to cart</button>
+          <p class="small">SECURE CHECKOUT protected by industry standard encryption. This is a demo environment and no payment is processed.</p>
+        </div>
+      `;
+      document.getElementById('add_btn').addEventListener('click', () => {
+        const qty = Math.max(1, parseInt(document.getElementById('qty').value||'1'));
+        addToCart(p, qty);
+      });
+    });
+  </script>
+</body>
+</html>

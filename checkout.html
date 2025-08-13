@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout | LuxeLight</title>
+  <link rel="stylesheet" href="assets/styles.css"/>
+  <script defer src="assets/script.js"></script>
+</head>
+<body>
+
+<header class="site_header">
+  <div class="container nav">
+    <a href="index.html" class="logo">LuxeLight</a>
+    <nav class="main_nav">
+      <a href="index.html">Home</a>
+      <a href="collection.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a href="checkout.html" class="cart_link">Cart <span id="cart_count">0</span></a>
+  </div>
+</header>
+
+  <main class="container checkout_wrap">
+    <div class="card_pad">
+      <h2>Customer details</h2>
+      <label class="label">Full name</label>
+      <input class="input" id="name" placeholder="Alex Smith"/>
+      <label class="label">Email</label>
+      <input class="input" id="email" placeholder="alex@example.com"/>
+      <label class="label">Phone</label>
+      <input class="input" id="phone" placeholder="+44 7000 000000"/>
+      <label class="label">Address</label>
+      <input class="input" id="addr1" placeholder="Street address"/>
+      <input class="input" id="addr2" placeholder="City"/>
+      <input class="input" id="postcode" placeholder="Postcode"/>
+      <h3 style="margin-top:16px">Payment</h3>
+      <input class="input" placeholder="Card number 0000 0000 0000 0000"/>
+      <div style="display:flex;gap:8px">
+        <input class="input" placeholder="MM/YY"/>
+        <input class="input" placeholder="CVC"/>
+      </div>
+      <button class="submit_btn" id="place_order">Place order</button>
+      <p class="small">This is a demo checkout. No payment will be taken.</p>
+    </div>
+    <div class="card_pad">
+      <h2>Order summary</h2>
+      <div id="order_items"></div>
+      <div class="order_total"><span>Subtotal</span><span id="subtotal">£0.00</span></div>
+      <div class="order_total"><span>Delivery</span><span>£0.00</span></div>
+      <div class="order_total"><span>Total</span><span id="total">£0.00</span></div>
+    </div>
+  </main>
+
+<footer class="site_footer">
+  <div class="container">
+    <p>© LuxeLight. All rights reserved.</p>
+  </div>
+</footer>
+
+  <script>
+    function renderOrder(){
+      const wrap = document.getElementById('order_items');
+      const items = getCart();
+      wrap.innerHTML = '';
+      items.forEach(i => {
+        const row = document.createElement('div');
+        row.className = 'order_item';
+        row.innerHTML = `
+          <img src="${i.image}" alt="${i.name}"/>
+          <div style="flex:1">
+            <div>${i.name}</div>
+            <div class="small">Qty ${i.qty}</div>
+          </div>
+          <div>${money(i.price * i.qty)}</div>
+        `;
+        wrap.appendChild(row);
+      });
+      document.getElementById('subtotal').textContent = money(cartTotal());
+      document.getElementById('total').textContent = money(cartTotal());
+    }
+    renderOrder();
+    document.getElementById('place_order').addEventListener('click', () => {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if(!name || !email){ alert('Please enter name and email'); return; }
+      alert('Order received. This is a demo checkout.');
+      localStorage.removeItem('cart');
+      location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

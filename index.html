@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LuxeLight | Premium Lighting</title>
+  <link rel="stylesheet" href="assets/styles.css"/>
+  <script defer src="assets/script.js"></script>
+</head>
+<body>
+
+<header class="site_header">
+  <div class="container nav">
+    <a href="index.html" class="logo">LuxeLight</a>
+    <nav class="main_nav">
+      <a href="index.html">Home</a>
+      <a href="collection.html">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <a href="checkout.html" class="cart_link">Cart <span id="cart_count">0</span></a>
+  </div>
+</header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="tag">Premium lighting for beautiful spaces</span>
+        <h1>Elevate every room with considered light</h1>
+        <p>Explore a curated collection of pendants, floor lamps, and sconces crafted for timeless interiors. Refined designs in brass, glass, and stone.</p>
+        <a class="cta" href="collection.html">Shop the collection</a>
+      </div>
+      <img src="https://source.unsplash.com/featured/?interior,lighting" alt="Interior lighting hero"/>
+    </section>
+
+    <section class="banner">
+      <div class="section_title">
+        <h2>Featured</h2>
+        <a href="collection.html">View all</a>
+      </div>
+      <div class="grid" id="featured_grid"></div>
+    </section>
+  </main>
+
+<footer class="site_footer">
+  <div class="container">
+    <p>© LuxeLight. All rights reserved.</p>
+  </div>
+</footer>
+
+  <script>
+    loadProducts().then(list => {
+      const grid = document.getElementById('featured_grid');
+      list.slice(0,6).forEach(p => {
+        const price = markedUp(p.basePrice);
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = 'product.html?id=' + p.id;
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.name}"/>
+          <div class="pad">
+            <h3>${p.name} <span class="stars">★★★★★</span></h3>
+            <div><span class="price">${money(price)}</span> <span class="base_price">${money(p.basePrice)}</span></div>
+          </div>`;
+        grid.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>
